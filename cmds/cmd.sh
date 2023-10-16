@@ -9,7 +9,7 @@ set -u # exit on unset variables
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
-  echo "No arguments provided. Please supply a command: install, list, run, update"
+  echo "No arguments provided. Please supply a command. See pnpmvm help for more details."
   exit 1
 fi
 
