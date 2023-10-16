@@ -6,7 +6,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
-cmd_files="install"
+cmd_files="install.sh"
 
 ensure_dir() {
   if [ ! -d "$1" ]; then
