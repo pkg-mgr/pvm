@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Installs the pnpm binary.
+
 set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
@@ -22,6 +24,7 @@ function remove_dir() {
     fi
   else
     echo "Error: Cannot remove folders outside of $base_dir"
+    exit 1
   fi
 }
 
