@@ -26,4 +26,4 @@ if [ ! -f "$cmds_dir/$cmd.sh" ]; then
 fi
 
 # Run the script for the command with all remaining arguments
-"$cmds_dir/cmds/$cmd.sh" "$@"
+"$cmds_dir/$cmd.sh" "$@"
