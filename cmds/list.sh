@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Lists installed pnpm binaries
+
 set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables

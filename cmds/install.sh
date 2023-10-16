@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Installs the pnpm binary.
+
 set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
@@ -22,6 +24,7 @@ function remove_dir() {
     fi
   else
     echo "Error: Cannot remove folders outside of $base_dir"
+    exit 1
   fi
 }
 
@@ -139,7 +142,7 @@ get_latest_version() {
 
 download_and_install_pnpm() {
   # requires "version" to be defined
-  local platform arch version_json archive_url tmp_dir
+  local platform arch version_json archive_url
   platform="$(detect_platform)"
   arch="$(detect_arch)" || abort "Sorry! pnpm currently only provides pre-built binaries for x86_64/arm64 architectures."
   
@@ -150,8 +153,8 @@ download_and_install_pnpm() {
   
   validate_url "$archive_url"  || abort "pnpm version '${version}' could not be found"
   
-  # install to PNPM_HOME, defaulting to ~/.pnpm
   tmp_dir="$(mktemp -d)" || abort "Tmpdir Error!"
+  # note: tmp_dir cannot be local due to this trap:
   trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
   
   ohai "Downloading pnpm binaries ${version}"
@@ -165,7 +168,6 @@ download_and_install_pnpm() {
   rm -r "$tmp_dir"
   echo "Removed temp dir $tmp_dir"
   echo "Installed pnpm to $install_dir"
-  # SHELL="$SHELL" "$tmp_dir/pnpm" setup --force || return 1
 }
 
 ##################### End of copied code ####################

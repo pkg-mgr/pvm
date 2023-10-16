@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Runs pnpm commands with auto-pnpm version detection (based on .pnpmvmrc file)
+
 set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
