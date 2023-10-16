@@ -15,13 +15,13 @@ ensure_dir() {
   fi
 }
 
-if [[ -t 0 ]]; then
-  # if standard input is a terminal, likely run locally... check to see if cmds folder exists
-  echo "This script was run from a file or sourced."
+# Detect setup method, local or github:
+if [[ -t 0 ]] && [[ -d "cmds" ]]; then
+  # if standard input is a terminal and the cmds dir exists, use local install
+  echo "Performing local install."
   file_source="local"
 else
   # likely invoked via curl so default to the github download method
-  echo "This script was run via a curl download or similar."
   file_source="github"
 fi
 
