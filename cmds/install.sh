@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -e # exit on errors
+set -o pipefail # exit on pipe failure
+set -u # exit on unset variables
+
 base_dir="$HOME/.pnpmvm"
 
 ensure_dir() {
