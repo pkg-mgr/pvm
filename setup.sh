@@ -6,7 +6,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
-cmd_files="install.sh"
+cmd_files="cmds.sh install.sh list.sh run.sh"
 
 ensure_dir() {
   if [ ! -d "$1" ]; then
@@ -36,3 +36,5 @@ do
 done
 
 echo "Installed pnpmvm cmds: $cmd_files"
+
+# todo: add alias for pnpmvm in user's profile, if it doesn't exist
