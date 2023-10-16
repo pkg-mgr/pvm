@@ -155,9 +155,11 @@ download_and_install_pnpm() {
   # download the binary to the specified directory
   download "$archive_url" > "$tmp_dir/pnpm"  || return 1
   # allow binary execution:
-  chmod +x "$tmp_dir/pnpm"  
+  chmod +x "$tmp_dir/pnpm"
   # Copy the binary to the install directory
   mv "$tmp_dir/pnpm" "$install_dir"
+  rm -r "$tmp_dir"
+  echo "Removed temp dir $tmp_dir"
   echo "Installed pnpm to $install_dir"
   # SHELL="$SHELL" "$tmp_dir/pnpm" setup --force || return 1
 }
@@ -166,25 +168,17 @@ download_and_install_pnpm() {
 
 
 # Script starts here:
-cmd="$1"
-arg1="$2"
+version="$1"
 
-
-# Handle "install" command
-if [ "$cmd" == "install" ]; then
-  version="$arg1"
-  if [ -z "${version}" ]; then
-    get_latest_version
-  fi
-  echo "Installing version $version"
-  install_dir="$base_dir/$version"
-  ensure_dir "$base_dir"
-  # for now, always force-install:
-  remove_dir "$install_dir"
-  ensure_dir "$install_dir"
-  download_and_install_pnpm
-  alias pnpm="$install_dir/pnpm"
-  echo "Download complete."
-else
-  echo "Unknown command: $cmd"
+if [ -z "${version}" ]; then
+  get_latest_version
+  # ^ this also sets the "version" variable as a side-effect
 fi
+echo "Installing version $version"
+install_dir="$base_dir/$version"
+ensure_dir "$base_dir"
+# for now, always force-install:
+remove_dir "$install_dir"
+ensure_dir "$install_dir"
+download_and_install_pnpm
+echo "Installed version $version"
