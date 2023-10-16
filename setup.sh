@@ -15,6 +15,14 @@ ensure_dir() {
   fi
 }
 
+if [[ -t 0 ]]; then
+    echo "This script was run from a file or sourced."
+else
+    echo "This script was run via a curl download or similar."
+fi
+
+exit 0
+
 # ensure the base dir exists:
 ensure_dir "$base_dir"
 
