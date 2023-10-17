@@ -1,7 +1,11 @@
 # pnpmvm
-Version Manager for pnpm
+## Version Manager for pnpm
 
 Tested with zsh, bash and fish shells on macOS. May work with others as well. WSL may work but is not yet tested.
+
+Project inspired by [nvm](https://github.com/nvm-sh/nvm), although implementation details are different. For pnpmvm the focus is primarily performance and an easy-to-script integration in project repositories. Because pnpmvm adds entries to the path, there is no startup cost for opening a new terminal, and package.json scripts or scripts running in any execution context can leverage pnpm and pnpmvm commands without worrying about undefined aliases.
+
+Additionally, each distinct function of pnpmvm is implemented as a separate script. This allows quicker execution for individual commands, with the downside that some code may need to be repeated between scripts. This tradeoff is acceptable because the main focus is on runtime performance. If you are used to using sluggish version managers, you will be pleasantly surprised by the speed of pnpmvm.
 
 ## Installation
 
