@@ -42,7 +42,7 @@ pnpm --version
 * The `cmd.sh` script is copied to `/usr/local/bin/pnpmvm`. This allows us to run the pnpmvm commands which collectively allow pnpm version management.
 
 ## Commands
-Note: after running setup and adding the alias, you can run `pnpmvm help` to see the list of available commands.
+Note: after running setup, you can run `pnpmvm help` to see the list of available commands.
 * `pnpmvm default` aka `~/.pnpmvm/cmds/default.sh` - lists the default version. (Initially set to the latest at time of original setup.)
 * `pnpmvm default <version>` aka `~/.pnpmvm/cmds/default.sh` - sets the default pnpm version
 * `pnpmvm help` aka `~/.pnpmvm/cmds/help.sh` - lists all available commands
@@ -63,6 +63,6 @@ Note: after running setup and adding the alias, you can run `pnpmvm help` to see
 * [shell-format](https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format) for auto-formatting
 
 ### Local Testing
-Make code changes, then run `./setup.sh` which will perform setup using your local code. Assuming you have your `pnpmvm` alias set up (see Installation for details), you can now test your local changes with using the pnpmvm command.
-Before preparing a PR, run ./extract-versions.js to update the `versions.txt` versions list.
+Make code changes, then run `./setup.sh` which will perform setup using your local code. You can now test your local changes with using the pnpmvm command.
+Before preparing a PR, run ./extract-versions.js to update the `versions.txt` versions list and `default-version.txt` default default version.
 Once you've tested the commands locally, raise a PR. The changes are live once they are merged to master.
