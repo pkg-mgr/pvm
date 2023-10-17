@@ -1,6 +1,8 @@
 # pnpmvm
 Version Manager for pnpm
 
+Tested with zsh, bash and fish shells on macOS. May work with others as well. WSL may work but is not yet tested.
+
 ## Installation
 
 First, remove any currently-installed pnpm versions. You can detect versions with `which pnpm` and then rm the file. You may need to do this more than once.
