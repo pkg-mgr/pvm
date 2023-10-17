@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script serves as the entrypoint for the pnpmvm alias.
+# This script serves as the entrypoint for the pnpmvm command.
 # It determines which script the user is trying to run and executes it, passing on all other args.
 
 set -e # exit on errors

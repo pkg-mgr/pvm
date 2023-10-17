@@ -101,4 +101,3 @@ cp "$cmds_dir/run.sh" "/usr/local/bin/pnpm"
 cp "$cmds_dir/cmd.sh" "/usr/local/bin/pnpmvm"
 
 echo Setup completed.
-# todo: add alias for pnpmvm in user's profile, if it doesn't exist
