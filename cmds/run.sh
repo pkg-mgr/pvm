@@ -61,8 +61,10 @@ else
   exit 1
 fi
 
-# todo: Check if the version is already installed and install it
-# for now, assume the version is installed
+if [ ! -f "$HOME/.pnpmvm/$pnpm_version" ]; then
+  echo "Version $pnpm_version is not installed. Please install it first. (pnpmvm install $pnpm_version)"
+  exit 1
+fi
 
 # Pass all the original arguments to the pnpm executable
 pnpm_executable_path="$base_dir/$pnpm_version/pnpm"
