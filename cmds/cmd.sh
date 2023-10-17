@@ -37,5 +37,8 @@ else
   echo "$@"
 fi
 
+# Export original PID (needed for use command)
+export pnpmvm_parent_pid=$PPID
+
 # Run the script for the command with all remaining arguments
 "$cmds_dir/$cmd.sh" "$@"
