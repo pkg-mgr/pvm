@@ -20,6 +20,12 @@ if [ -z "$version" ]; then
   fi
 fi
 
+# Check if the version is already installed
+if [ ! -f "$HOME/.pnpmvm/$version" ]; then
+  echo "Version $version is not installed. Please install it first. (pnpmvm install $version)"
+  exit 1
+fi
+
 # Assume version is semantic for now. In the future, support latest6, latest7, latest8, latest, etc.
 echo "$version" > "$default_version_file"
 echo "Wrote version $version to $default_version_file"

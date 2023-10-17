@@ -174,7 +174,7 @@ download_and_install_pnpm() {
 
 
 # Script starts here:
-version="$1"
+version=${1:-}
 
 if [ -z "${version}" ]; then
   get_latest_version
