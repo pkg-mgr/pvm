@@ -21,7 +21,7 @@ if [ -z "$version" ]; then
 fi
 
 # Check if the version is already installed
-if [ ! -f "$HOME/.pnpmvm/$version" ]; then
+if [ ! -f "$HOME/.pnpmvm/$version/pnpm" ]; then
   echo "Version $version is not installed. Please install it first. (pnpmvm install $version)"
   exit 1
 fi
