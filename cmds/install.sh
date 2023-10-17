@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installs the pnpm binary.
+# Installs a specified pnpm binary (or defaults to the latest).
 
 set -e # exit on errors
 set -o pipefail # exit on pipe failure
