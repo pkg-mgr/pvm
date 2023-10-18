@@ -140,12 +140,45 @@ get_latest_version() {
   version="$(printf '%s' "${version_json}" | tr '{' '\n' | awk -F '"' '/latest/ { print $4 }')"
 }
 
+find_version() {
+  # The first argument is the major version number
+  local major_version=$1
+
+  # Read the file and find the line
+  resolved_major=$(grep "^$major_version\." "$HOME/.pnpmvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
+
+  # Print the result
+  echo "$resolved_major"
+}
+
 download_and_install_pnpm() {
   # requires "version" to be defined
   local platform arch version_json archive_url
   platform="$(detect_platform)"
   arch="$(detect_arch)" || abort "Sorry! pnpm currently only provides pre-built binaries for x86_64/arm64 architectures."
   
+  # checks to see if input is a single positive major version integer
+  # if yes, goes to find the latest of that major and set version to the latest
+  if [[ $version =~ ^-?[0-9]+$ ]] && ((version > 0)); then
+    target_version=$(find_version "$version")
+  else
+    echo "
+      Invalid version format.  Try:
+      pnpmvm install
+      pnpmvm install 8
+      pnpmvm install 8.9.2
+    "
+    exit 1
+  fi
+
+  #if everything exists and checks out, we set version to the specified major's latest
+  if [ "${target_version}" ]; then
+    version=$target_version
+  else
+    echo "Specified pnpm version not found or does not exist!"
+    exit 1
+  fi
+
   archive_url="https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-${platform}-${arch}"
   if [ "${platform}" = "win" ]; then
     archive_url="${archive_url}.exe"
