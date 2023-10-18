@@ -56,6 +56,7 @@ Note: after running setup, you can run `pvm help` to see the list of available c
 * `pvm install <version>` aka `~/.pnpmvm/cmds/install.sh` - installs specified pnpm version.
 * `pvm list` aka `~/.pnpmvm/cmds/list.sh` - lists all currently installed versions of pnpm
 * `pvm list --remote` aka `~/.pnpmvm/cmds/list.sh` - lists all versions available to install
+* `pvm nuke` aka `~/.pnpmvm/cmds/nuke.sh` - removes pnpmvm and all pnpm binaries completely
 * `pvm run` aka `~/.pnpmvm/cmds/run.sh` - runs a pnpm command using automatic pnpm version detection. (The pnpm command will also do this directly.)
 * `pvm uninstall <version>` aka `~/.pnpmvm/cmds/uninstall.sh` - uninstalls specified pnpm version
 * `pvm update` aka `~/.pnpmvm/cmds/` - updates all pnpmvm scripts
