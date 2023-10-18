@@ -6,13 +6,13 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-if [ -z "$1" ]; then
-  echo "No version provided. Please supply a version number. (ex: pnpmvm uninstall 8.9.2)"
+version=${1:-}
+if [ -z "$version" ]; then
+  echo "No version provided. Please supply a version number. (ex: pvm uninstall 8.9.2)"
   exit 1
 fi
 
 base_dir="$HOME/.pnpmvm"
-version="$1"
 version_dir="$base_dir/$version"
 
 function remove_dir() {

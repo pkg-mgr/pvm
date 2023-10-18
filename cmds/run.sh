@@ -49,20 +49,22 @@ elif [ -f "$tmp_version_file" ]; then
   echo "Using version: $pnpm_version via $tmp_version_file"
 # Else fall back to system-wide default version (if it exists):
 elif [ -f "$default_version_file" ]; then
-  echo "falling back to default version"
   pnpm_version=$(head -n 1 "$default_version_file")
-  echo "default_version_file: $default_version_file"
+  if [ "$PNPMVM_DEBUG" = "true" ]; then
+    echo "DEBUG: falling back to default version"
+    echo "DEBUG: default_version_file: $default_version_file"
+  fi
   echo "Using version: $pnpm_version"
 # Else throw an error because we don't know what version to run:
 else
   echo "Unable to determine which version of pnpm to use."
-  echo "Set a default version with pnpmvm default <version>"
-  echo "Or use a version for the current shell session with pnpmvm use <version>"
+  echo "Set a default version with pvm default <version>"
+  echo "Or use a version for the current shell session with pvm use <version>"
   exit 1
 fi
 
 if [ ! -f "$HOME/.pnpmvm/$pnpm_version" ]; then
-  echo "Version $pnpm_version is not installed. Please install it first. (pnpmvm install $pnpm_version)"
+  echo "Version $pnpm_version is not installed. Please install it first. (pvm install $pnpm_version)"
   exit 1
 fi
 
