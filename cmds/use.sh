@@ -8,13 +8,13 @@ set -u # exit on unset variables
 
 version=${1:-}
 if [ -z "$version" ]; then
-  echo "No version provided. Please supply a version number. Example: (pnpmvm use 8.9.2)"
+  echo "No version provided. Please supply a version number. Example: (pvm use 8.9.2)"
   exit 1
 fi
 
 # Check if the version is already installed
 if [ ! -f "$HOME/.pnpmvm/$version/pnpm" ]; then
-  echo "Version $version is not installed. Please install it first. (pnpmvm install $version)"
+  echo "Version $version is not installed. Please install it first. (pvm install $version)"
   exit 1
 fi
 
@@ -26,6 +26,8 @@ else
 fi
 tmp_version_file="/tmp/PNPMVM_VERSION_$parent_pid"
 echo "$version" > "$tmp_version_file"
-echo "Using version: $version via $tmp_version_file"
 
-
+if [ "$PNPMVM_DEBUG" = "true" ]; then
+  echo "DEBUG: Wrote version $version to $tmp_version_file"
+fi
+echo "Now using version: $version"

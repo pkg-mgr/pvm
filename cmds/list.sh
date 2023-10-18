@@ -12,7 +12,7 @@ base_dir="$HOME/.pnpmvm"
 if [ "${1:-}" = "--remote" ]; then
   echo "Available remote versions:"
   cat "$base_dir/versions.txt"
-  echo "Use pnpmvm install <version> to install."
+  echo "Use pvm install <version> to install."
 else
     # List all folders in the base dir, excluding "cmds":
   echo "Available local versions:"
@@ -22,5 +22,5 @@ else
       echo "$dir_name"
     fi
   done
-  echo "Use \"pnpmvm list --remote\" to list available remote versions."
+  echo "Use \"pvm list --remote\" to list available remote versions."
 fi

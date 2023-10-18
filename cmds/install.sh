@@ -147,7 +147,7 @@ find_version() {
   # Read the file and find the line
   resolved_major=$(grep "^$major_version\." "$HOME/.pnpmvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
 
-  # Print the result
+  # Return the result
   echo "$resolved_major"
 }
 
@@ -159,30 +159,36 @@ download_and_install_pnpm() {
   
   # checks to see if input is a single positive major version integer
   # if yes, goes to find the latest of that major and set version to the latest
-  if [[ $version =~ ^-?[0-9]+$ ]] && ((version > 0)); then
-    target_version=$(find_version "$version")
+  if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.\w]*)$ ]]; then
+    # matches `6.32.4` or `7.0.0-rc.0`
+    echo "Semantic version specified"
+  elif [[ $version =~ ^[0-9]$ ]] && ((version > 0)); then
+    # Major version specified
+    echo major version specified
+    version=$(find_version "$version")
+    echo "Resolved version: $version"
   else
     echo "
       Invalid version format.  Try:
-      pnpmvm install
-      pnpmvm install 8
-      pnpmvm install 8.9.2
+      pvm install
+      pvm install 8
+      pvm install 8.9.2
     "
     exit 1
   fi
 
-  #if everything exists and checks out, we set version to the specified major's latest
-  if [ "${target_version}" ]; then
-    version=$target_version
-  else
-    echo "Specified pnpm version not found or does not exist!"
-    exit 1
-  fi
+  install_dir="$base_dir/$version"
+  ensure_dir "$base_dir"
+  # for now, always force-install:
+  remove_dir "$install_dir"
+  ensure_dir "$install_dir"
 
   archive_url="https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-${platform}-${arch}"
   if [ "${platform}" = "win" ]; then
     archive_url="${archive_url}.exe"
   fi
+
+  echo "Archive url: $archive_url"
   
   validate_url "$archive_url"  || abort "pnpm version '${version}' could not be found"
   
@@ -191,7 +197,9 @@ download_and_install_pnpm() {
   trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
   
   ohai "Downloading pnpm binaries ${version}"
-  echo "Using temp dir $tmp_dir"
+  if [ "$PNPMVM_DEBUG" = "true" ]; then
+    echo "Using temp dir $tmp_dir"
+  fi
   # download the binary to the specified directory
   download "$archive_url" > "$tmp_dir/pnpm"  || return 1
   # allow binary execution:
@@ -199,8 +207,10 @@ download_and_install_pnpm() {
   # Copy the binary to the install directory
   mv "$tmp_dir/pnpm" "$install_dir"
   rm -r "$tmp_dir"
-  echo "Removed temp dir $tmp_dir"
-  echo "Installed pnpm to $install_dir"
+  if [ "$PNPMVM_DEBUG" = "true" ]; then
+    echo "Removed temp dir $tmp_dir"
+    echo "Installed pnpm to $install_dir"
+  fi
 }
 
 ##################### End of copied code ####################
@@ -214,10 +224,5 @@ if [ -z "${version}" ]; then
   # ^ this also sets the "version" variable as a side-effect
 fi
 echo "Installing version $version"
-install_dir="$base_dir/$version"
-ensure_dir "$base_dir"
-# for now, always force-install:
-remove_dir "$install_dir"
-ensure_dir "$install_dir"
 download_and_install_pnpm
 echo "Installed version $version"

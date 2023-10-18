@@ -24,7 +24,7 @@ curl -H 'Cache-Control: no-cache' -o- https://raw.githubusercontent.com/pkg-mgr/
 ## Uninstalling
 
 ```sh
-rm -rf ~/.pnpmvm /usr/local/bin/pnpm /usr/local/bin/pnpmvm
+rm -rf ~/.pnpmvm /usr/local/bin/pnpm /usr/local/bin/pnpmvm /usr/local/bin/pvm
 ```
 
 ## Usage
@@ -45,21 +45,22 @@ pnpm --version
 * Individual command scripts are installed to `~/.pnpmvm/cmds`` folder
 * pnpm binaries are installed to `~/.pnpmvm/version` folders (ex: `~/.pnpmvm/8.9.2`)
 * The `run.sh` script is copied to `/usr/local/bin/pnpm`. This allows us to intercept and run pnpm commands with the correct version of pnpm.
-* The `cmd.sh` script is copied to `/usr/local/bin/pnpmvm`. This allows us to run the pnpmvm commands which collectively allow pnpm version management.
+* The `cmd.sh` script is copied to `/usr/local/bin/pnpmvm` and `/usr/local/bin/pvm`. This allows us to run the pnpmvm commands which collectively allow pnpm version management.
 
 ## Commands
-Note: after running setup, you can run `pnpmvm help` to see the list of available commands.
-* `pnpmvm default` aka `~/.pnpmvm/cmds/default.sh` - lists the default version. (Initially set to the latest at time of original setup.)
-* `pnpmvm default <version>` aka `~/.pnpmvm/cmds/default.sh` - sets the default pnpm version
-* `pnpmvm help` aka `~/.pnpmvm/cmds/help.sh` - lists all available commands
-* `pnpmvm install` aka `~/.pnpmvm/cmds/install.sh` - installs the latest version of pnpm
-* `pnpmvm install <version>` aka `~/.pnpmvm/cmds/install.sh` - installs specified pnpm version.
-* `pnpmvm list` aka `~/.pnpmvm/cmds/list.sh` - lists all currently installed versions of pnpm
-* `pnpmvm list --remote` aka `~/.pnpmvm/cmds/list.sh` - lists all versions available to install
-* `pnpmvm run` aka `~/.pnpmvm/cmds/run.sh` - runs a pnpm command using automatic pnpm version detection. (The pnpm command will also do this directly.)
-* `pnpmvm uninstall <version>` aka `~/.pnpmvm/cmds/uninstall.sh` - uninstalls specified pnpm version
-* `pnpmvm update` aka `~/.pnpmvm/cmds/` - updates all pnpmvm scripts
-* `pnpmvm use` aka `~/.pnpmvm/cmds/use.sh` - sets the pnpm version for the current terminal session
+Note: after running setup, you can run `pvm help` to see the list of available commands.
+* `pvm default` aka `~/.pnpmvm/cmds/default.sh` - lists the default version. (Initially set to the latest at time of original setup.)
+* `pvm default <version>` aka `~/.pnpmvm/cmds/default.sh` - sets the default pnpm version
+* `pvm help` aka `~/.pnpmvm/cmds/help.sh` - lists all available commands
+* `pvm install` aka `~/.pnpmvm/cmds/install.sh` - installs the latest version of pnpm
+* `pvm install <version>` aka `~/.pnpmvm/cmds/install.sh` - installs specified pnpm version.
+* `pvm list` aka `~/.pnpmvm/cmds/list.sh` - lists all currently installed versions of pnpm
+* `pvm list --remote` aka `~/.pnpmvm/cmds/list.sh` - lists all versions available to install
+* `pvm nuke` aka `~/.pnpmvm/cmds/nuke.sh` - removes pnpmvm and all pnpm binaries completely
+* `pvm run` aka `~/.pnpmvm/cmds/run.sh` - runs a pnpm command using automatic pnpm version detection. (The pnpm command will also do this directly.)
+* `pvm uninstall <version>` aka `~/.pnpmvm/cmds/uninstall.sh` - uninstalls specified pnpm version
+* `pvm update` aka `~/.pnpmvm/cmds/` - updates all pnpmvm scripts
+* `pvm use` aka `~/.pnpmvm/cmds/use.sh` - sets the pnpm version for the current terminal session
 
 ## Local Development Setup
 ### Local Dev Install:

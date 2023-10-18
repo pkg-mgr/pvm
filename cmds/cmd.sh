@@ -9,15 +9,24 @@ set -u # exit on unset variables
 
 # Check if at least one argument is provided
 if [ $# -eq 0 ]; then
-  echo "No arguments provided. Please supply a command. See pnpmvm help for more details."
+  echo "No arguments provided. Please supply a command. See pvm help for more details."
+  echo ""
+  ~/.pnpmvm/cmds/help.sh
   exit 1
 fi
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
 
+PNPMVM_DEBUG=false
+# Check for debug (verbose) output
+if [ "$1" == "--debug" ]; then
+  PNPMVM_DEBUG=true
+  shift
+fi
+
 # Get the command from the first argument
-cmd=$1
+cmd=${1:-}
 
 # Shift all arguments to the left (original $1 gets lost)
 shift
@@ -25,20 +34,23 @@ shift
 # Check if the script for the command exists
 if [ ! -f "$cmds_dir/$cmd.sh" ]; then
   echo "Command not found: $cmd at $cmds_dir/$cmd.sh"
+  ./"$base_dir"/cmds/help.sh
   exit 1
 fi
 
-echo "Running command: $cmd"
-# For troubleshooting, echo the args (remove this later):
-if [ -z "$*" ]; then
-  echo "No args provided"
-else
-  echo "Args:"
-  echo "$@"
+if [ "$PNPMVM_DEBUG" = "true" ]; then
+  echo "DEBUG: Running command: $cmd"
+  if [ -z "$*" ]; then
+    echo "DEBUG: No args provided"
+  else
+    echo "DEBUG: Args:"
+    echo "$@"
+  fi
 fi
 
 # Export original PID (needed for use command)
 export pnpmvm_parent_pid=$PPID
+export PNPMVM_DEBUG
 
 # Run the script for the command with all remaining arguments
 "$cmds_dir/$cmd.sh" "$@"

@@ -6,7 +6,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
-cmd_files="cmd.sh default.sh help.sh install.sh list.sh run.sh uninstall.sh update.sh use.sh"
+cmd_list="cmd default help install list nuke run uninstall update use"
 NUKE_PNPM=${NUKE_PNPM:-0}
 
 ensure_dir() {
@@ -27,8 +27,6 @@ if [ "$NUKE_PNPM" -eq 1 ]; then
       break
     fi
   done
-else
-  echo "NUKE_PNPM is not set to 1, skipping deletion of pnpm"
 fi
 
 # Detect setup method, local or github:
@@ -51,26 +49,27 @@ fi
 ensure_dir "$cmds_dir"
 
 # copy specific pnpmvm command scripts to local $cmds_dir:
-for file in $cmd_files
+for cmd_name in $cmd_list
 do
+  file_name="$cmd_name.sh"
   if [ "$file_source" = "local" ]; then
-    echo "Copying file from local: ./cmds/$file"
-    cp "./cmds/$file" "$cmds_dir/$file"
+    echo "Copying file from local: ./cmds/$file_name"
+    cp "./cmds/$file_name" "$cmds_dir/$file_name"
     elif [ "$file_source" = "github" ]; then
     # download the file:
-    echo "Downloading: https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file"
+    echo "Downloading: https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file_name"
     # disable cache, fail on 404, silence progress (but not errors) and save locally:
-    curl -H 'Cache-Control: no-cache' -fsS -o "$cmds_dir/$file" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file"
+    curl -H 'Cache-Control: no-cache' -fsS -o "$cmds_dir/$file_name" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file_name"
   else
     echo "Unknown file source."
     exit 1
   fi
   # make it executable:
-  chmod +x "$cmds_dir/$file"
+  chmod +x "$cmds_dir/$file_name"
 done
 
 # copy pnpm's package.json to local:
-echo "Caching pnpm's package.json..."
+echo "Caching pnpm's package.json."
 curl -H 'Cache-Control: no-cache' -fsS -o "$base_dir/pnpm-package.json" "https://registry.npmjs.org/@pnpm/exe"
 if [ "$file_source" = "local" ]; then
   # also update the local copy:
@@ -94,10 +93,11 @@ if [ ! -f "$base_dir/default-version.txt" ]; then
 fi
 # otherwise, do not override default version!
 
-echo "Installed pnpmvm cmds: $cmd_files"
+echo "Installed pvm cmds: $cmd_list"
 
-echo "Installing scripts in bin folder. If it fails, you may need to sudo cp \"$cmds_dir/run.sh\" \"/usr/local/bin/pnpm\" && sudo cp \"$cmds_dir/cmd.sh\" \"/usr/local/bin/pnpmvm\""
+echo "Installing scripts in bin folder."
 cp "$cmds_dir/run.sh" "/usr/local/bin/pnpm"
 cp "$cmds_dir/cmd.sh" "/usr/local/bin/pnpmvm"
+cp "$cmds_dir/cmd.sh" "/usr/local/bin/pvm"
 
 echo Setup completed.
