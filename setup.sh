@@ -6,7 +6,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
-cmd_list="cmd default help install list nuke run uninstall update use"
+cmd_list="cmd default help install list nuke run uninstall unuse update use"
 NUKE_PNPM=${NUKE_PNPM:-0}
 
 ensure_dir() {
@@ -82,16 +82,6 @@ if [ "$file_source" = "local" ]; then
 else
   curl -H 'Cache-Control: no-cache' -fsS -o "$base_dir/versions.txt" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/versions.txt"
 fi
-
-# if $base_dir/default-version.txt does not exist:
-if [ ! -f "$base_dir/default-version.txt" ]; then
-  if [ "$file_source" = "local" ]; then
-    cp "./default-version.txt" "$base_dir/default-version.txt"
-  else
-    curl -H 'Cache-Control: no-cache' -fsS -o "$base_dir/default-version.txt" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/default-version.txt"
-  fi
-fi
-# otherwise, do not override default version!
 
 echo "Installed pvm cmds: $cmd_list"
 

@@ -7,6 +7,7 @@ set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
+default_version_file="$base_dir/default-version.txt"
 
 ensure_dir() {
   if [ ! -d "$1" ]; then
@@ -215,7 +216,6 @@ download_and_install_pnpm() {
 
 ##################### End of copied code ####################
 
-
 # Script starts here:
 version=${1:-}
 
@@ -226,3 +226,12 @@ fi
 echo "Installing version $version"
 download_and_install_pnpm
 echo "Installed version $version"
+
+# ensure default version exists:
+if [[ ! -f $default_version_file ]]; then
+  echo "No default version detected, setting $version as default."
+  echo "$version" > "$default_version_file"
+fi
+
+# use the newly-installed version:
+"$base_dir/cmds/cmd.sh" use "$version"
