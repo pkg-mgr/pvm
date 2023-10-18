@@ -160,9 +160,7 @@ download_and_install_pnpm() {
   # checks to see if input is a single positive major version integer
   # if yes, goes to find the latest of that major and set version to the latest
   if [[ $version =~ ^-?[0-9]+$ ]] && ((version > 0)); then
-    echo "i am a positive integer: {$version}"
     target_version=$(find_version "$version")
-    echo "targetting: ${target_version}"
   else
     echo "
       Invalid version format.  Try:
