@@ -180,10 +180,8 @@ download_and_install_pnpm() {
 
   install_dir="$base_dir/$version"
   ensure_dir "$base_dir"
-  # for now, always force-install:
-  remove_dir "$install_dir"
-  ensure_dir "$install_dir"
 
+  # first validate that incoming version exists/has a url
   archive_url="https://github.com/pnpm/pnpm/releases/download/v${version}/pnpm-${platform}-${arch}"
   if [ "${platform}" = "win" ]; then
     archive_url="${archive_url}.exe"
@@ -192,6 +190,10 @@ download_and_install_pnpm() {
   echo "Archive url: $archive_url"
   
   validate_url "$archive_url"  || abort "pnpm version '${version}' could not be found"
+
+  # for now, always force-install:
+  remove_dir "$install_dir"
+  ensure_dir "$install_dir"
   
   tmp_dir="$(mktemp -d)" || abort "Tmpdir Error!"
   # note: tmp_dir cannot be local due to this trap:
