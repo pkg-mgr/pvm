@@ -157,26 +157,8 @@ download_and_install_pnpm() {
   local platform arch version_json archive_url
   platform="$(detect_platform)"
   arch="$(detect_arch)" || abort "Sorry! pnpm currently only provides pre-built binaries for x86_64/arm64 architectures."
-  
-  # checks to see if input is a single positive major version integer
-  # if yes, goes to find the latest of that major and set version to the latest
-  if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.\w]*)$ ]]; then
-    # matches `6.32.4` or `7.0.0-rc.0`
-    echo "Semantic version specified"
-  elif [[ $version =~ ^[0-9]$ ]] && ((version > 0)); then
-    # Major version specified
-    echo major version specified
-    version=$(find_version "$version")
-    echo "Resolved version: $version"
-  else
-    echo "
-      Invalid version format.  Try:
-      pvm install
-      pvm install 8
-      pvm install 8.9.2
-    "
-    exit 1
-  fi
+
+  version=$(./cmds/resolve_version.sh "$version")
 
   install_dir="$base_dir/$version"
   ensure_dir "$base_dir"
