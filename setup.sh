@@ -6,7 +6,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pnpmvm"
 cmds_dir="$base_dir/cmds"
-cmd_list="cmd default help install list nuke run uninstall unuse update use"
+cmd_list="cmd default help install list nuke run uninstall unuse update use resolve_version"
 NUKE_PNPM=${NUKE_PNPM:-0}
 
 ensure_dir() {

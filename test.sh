@@ -53,8 +53,8 @@ uninstall_pnpmvm() {
 check_pvm_default_version() {
   local expected_version=$1
   default_version_output=$(pvm default)
-  if [[ ! $default_version_output == "Current default version: $expected_version" ]]; then
-    echo "Current default version $default_version_output doesn't match expected version $expected_version"
+  if [[ ! $default_version_output == "$expected_version" ]]; then
+    echo "Output '$default_version_output' doesn't match expected '$expected_version'"
     exit 1
   fi
 }
