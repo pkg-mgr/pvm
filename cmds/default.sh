@@ -14,9 +14,9 @@ default_version_file="$base_dir/default-version.txt"
 default_exists() {
   if [ -f "$default_version_file" ]; then
     default_version=$(head -n 1 "$default_version_file")
-    echo "Current default version is $default_version"
+    echo "$default_version"
   else
-    echo "No default version set." > `tty`
+    echo "No default version set." > "$(tty)"
     exit 0
   fi
 }
