@@ -18,6 +18,7 @@ if [ -z "$version" ]; then
     version="$default_version"
   else
     echo "No default version set."
+    exit 0
   fi
 fi
 
