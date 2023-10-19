@@ -6,11 +6,7 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-version=${1:-}
-if [ -z "$version" ]; then
-  echo "No version provided. Please supply a version number. Example: (pvm use 8.9.2)"
-  exit 1
-fi
+version=$(./cmds/resolve_version.sh "${1:-}")
 
 # Check if the version is already installed
 if [ ! -f "$HOME/.pnpmvm/$version/pnpm" ]; then

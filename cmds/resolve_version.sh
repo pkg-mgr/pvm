@@ -34,6 +34,8 @@ if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.\w]*)$ ]]; then
       pvm install
       pvm install 8
       pvm install 8.9.2
+      pvm use 7
+      pvm use 7.32.0
   " > `tty`
   exit 1
 fi
