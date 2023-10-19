@@ -236,4 +236,4 @@ if [[ ! -f $default_version_file ]]; then
 fi
 
 # use the newly-installed version:
-"$base_dir/cmds/cmd.sh" use "$version"
+"$base_dir/cmds/use.sh" "$version"

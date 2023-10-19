@@ -18,11 +18,12 @@ if [ -z "$version" ]; then
     version="$default_version"
   else
     echo "No default version set."
+    exit 0
   fi
 fi
 
 # If not checking the default version...
-if [ -z "$default_version" ]; then
+if [ -z "${default_version:-}" ]; then
   # Check if the version is already installed
   if [ ! -f "$HOME/.pnpmvm/$version/pnpm" ]; then
     echo "Version $version is not installed. Please install it first. (pvm install $version)"

@@ -25,13 +25,15 @@ curl -H 'Cache-Control: no-cache' -o- https://raw.githubusercontent.com/pkg-mgr/
 
 ```sh
 rm -rf ~/.pnpmvm /usr/local/bin/pnpm /usr/local/bin/pnpmvm /usr/local/bin/pvm
+# or simply:
+pvm nuke
 ```
 
 ## Usage
 
-Once installed, you need to install at least one version of pnpm.
+Once pvm is installed, you need to install at least one version of pnpm (ex: `pvm install 8.9.2`). You are now ready to use pnpm. You can then install additional versions the same way and switch between them with `pvm use <version>`.
 
-You can specify a default version, or use a specific version.
+You can also specify a default version for a new shell session where you have not run the `pvm use <version>` command.
 
 In addition, if you create a .pnpmvmrc file with a version in the same folder as a package.json file, any pnpm command run in that folder will automatically use the specified version.
 
@@ -40,6 +42,7 @@ Example:
 echo "8.9.2" > .pnpmvmrc
 pnpm --version
 ```
+(The `.pnpmvmrc` must be in the same directory as your project's `package.json` file.)
 
 ## How It Works
 * Individual command scripts are installed to `~/.pnpmvm/cmds`` folder
