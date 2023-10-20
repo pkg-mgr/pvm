@@ -33,9 +33,9 @@ pvm nuke
 
 Once pvm is installed, you need to install at least one version of pnpm (ex: `pvm install 8.9.2`). You are now ready to use pnpm. You can then install additional versions the same way and switch between them with `pvm use <version>`.
 
-You can also specify a default version for a new shell session where you have not run the `pvm use <version>` command.
+You can also specify a default version (ex: `pvm default 8.9.5`) for any new shell session where you have not run the `pvm use <version>` command yet.
 
-In addition, if you create a .pvmrc file with a version in the same folder as a package.json file, any pnpm command run in that folder will automatically use the specified version.
+In addition, if you create a `.pvmrc` file with a version in the same folder as a `package.json` file, any pnpm command run in that folder will automatically use the specified version.
 
 Example:
 ```sh

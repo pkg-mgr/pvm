@@ -3,6 +3,7 @@
 		"cmds",
 		"pnpmvm",
 		"pnpmvmrc",
+		"pvmrc",
 		"shellcheck"
 	]
 }
