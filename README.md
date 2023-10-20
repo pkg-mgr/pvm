@@ -1,4 +1,4 @@
-# pvm
+# @pkg-mgr / pvm
 ## Version Manager for pnpm
 
 Tested with zsh, bash and fish shells on macOS. May work with others as well. WSL may work but is not yet tested.
