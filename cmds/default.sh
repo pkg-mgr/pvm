@@ -6,9 +6,7 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-# version=$(./cmds/resolve_version.sh "${1:-}")
-# echo $version
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 default_version_file="$base_dir/default-version.txt"
 
 default_exists() {
@@ -28,10 +26,12 @@ if [ $# -eq 0 ]; then
 fi
 
 # since a version is provided here, we should resolve the input
-version=$(./cmds/resolve_version.sh "$1")
+base_dir="$HOME/.pvm"
+cmds_dir="$base_dir/cmds"
+version=$("$cmds_dir/resolve_version.sh" "${1:-}")
 
 # Check if the version is already installed
-if [ ! -f "$HOME/.pnpmvm/$version/pnpm" ]; then
+if [ ! -f "$HOME/.pvm/$version/pnpm" ]; then
   echo "Version $version is not installed. Please install it first. (pvm install $version)"
   exit 1
 fi
@@ -39,6 +39,6 @@ fi
 # Next, set the new default version:
 echo "$version" > "$default_version_file"
 echo "Setting default version to $version"
-if [ "$PNPMVM_DEBUG" = "true" ]; then
+if [ "$pvm_DEBUG" = "true" ]; then
   echo "DEBUG: Wrote version $version to $default_version_file"
 fi

@@ -4,7 +4,7 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 cmds_dir="$base_dir/cmds"
 cmd_list="cmd default help install list nuke run uninstall unuse update use resolve_version"
 NUKE_PNPM=${NUKE_PNPM:-0}
@@ -48,7 +48,7 @@ if [ -d "$cmds_dir" ]; then
 fi
 ensure_dir "$cmds_dir"
 
-# copy specific pnpmvm command scripts to local $cmds_dir:
+# copy specific pvm command scripts to local $cmds_dir:
 for cmd_name in $cmd_list
 do
   file_name="$cmd_name.sh"
@@ -57,9 +57,9 @@ do
     cp "./cmds/$file_name" "$cmds_dir/$file_name"
     elif [ "$file_source" = "github" ]; then
     # download the file:
-    echo "Downloading: https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file_name"
+    echo "Downloading: https://raw.githubusercontent.com/pkg-mgr/pvm/main/cmds/$file_name"
     # disable cache, fail on 404, silence progress (but not errors) and save locally:
-    curl -H 'Cache-Control: no-cache' -fsS -o "$cmds_dir/$file_name" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/cmds/$file_name"
+    curl -H 'Cache-Control: no-cache' -fsS -o "$cmds_dir/$file_name" "https://raw.githubusercontent.com/pkg-mgr/pvm/main/cmds/$file_name"
   else
     echo "Unknown file source."
     exit 1
@@ -80,14 +80,13 @@ fi
 if [ "$file_source" = "local" ]; then
   cp "./versions.txt" "$base_dir/versions.txt"
 else
-  curl -H 'Cache-Control: no-cache' -fsS -o "$base_dir/versions.txt" "https://raw.githubusercontent.com/pkg-mgr/pnpmvm/main/versions.txt"
+  curl -H 'Cache-Control: no-cache' -fsS -o "$base_dir/versions.txt" "https://raw.githubusercontent.com/pkg-mgr/pvm/main/versions.txt"
 fi
 
 echo "Installed pvm cmds: $cmd_list"
 
 echo "Installing scripts in bin folder."
 cp "$cmds_dir/run.sh" "/usr/local/bin/pnpm"
-cp "$cmds_dir/cmd.sh" "/usr/local/bin/pnpmvm"
 cp "$cmds_dir/cmd.sh" "/usr/local/bin/pvm"
 
 echo Setup completed.

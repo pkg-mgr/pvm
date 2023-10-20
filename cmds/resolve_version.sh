@@ -11,7 +11,7 @@ find_version() {
   local major_version=$1
 
   # Read the file and find the line
-  resolved_major=$(grep "^$major_version\." "$HOME/.pnpmvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
+  resolved_major=$(grep "^$major_version\." "$HOME/.pvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
 
   # Return the result
   echo "$resolved_major"

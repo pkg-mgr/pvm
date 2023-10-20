@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Completely removes pnpmvm from your system.
+# Completely removes pvm from your system.
 # This includes all installed versions of pnpm.
 
 set -e # exit on errors
@@ -12,12 +12,11 @@ read -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    base_dir="$HOME/.pnpmvm"
+    base_dir="$HOME/.pvm"
 	 echo Removing "$base_dir"
     rm -rf "$base_dir"
 	 echo Removing scripts from /usr/local/bin
 	 rm -f /usr/local/bin/pnpm
-	 rm -f /usr/local/bin/pnpmvm
 	 rm -f /usr/local/bin/pvm
 	 echo "Uninstall complete."
 else

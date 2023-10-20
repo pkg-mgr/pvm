@@ -12,7 +12,7 @@ if [ -z "$version" ]; then
   exit 1
 fi
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 version_dir="$base_dir/$version"
 
 function remove_dir() {

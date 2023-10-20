@@ -6,7 +6,8 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
+cmds_dir="$base_dir/cmds"
 default_version_file="$base_dir/default-version.txt"
 
 ensure_dir() {
@@ -146,7 +147,7 @@ find_version() {
   local major_version=$1
 
   # Read the file and find the line
-  resolved_major=$(grep "^$major_version\." "$HOME/.pnpmvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
+  resolved_major=$(grep "^$major_version\." "$HOME/.pvm/versions.txt" | grep "^[0-9\.-]*$" | tail -n 1)
 
   # Return the result
   echo "$resolved_major"
@@ -158,7 +159,7 @@ download_and_install_pnpm() {
   platform="$(detect_platform)"
   arch="$(detect_arch)" || abort "Sorry! pnpm currently only provides pre-built binaries for x86_64/arm64 architectures."
 
-  version=$(./cmds/resolve_version.sh "$version")
+  version=$("$cmds_dir/resolve_version.sh" "$version")
 
   install_dir="$base_dir/$version"
   ensure_dir "$base_dir"
@@ -182,7 +183,7 @@ download_and_install_pnpm() {
   trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
   
   ohai "Downloading pnpm binaries ${version}"
-  if [ "$PNPMVM_DEBUG" = "true" ]; then
+  if [ "$pvm_DEBUG" = "true" ]; then
     echo "Using temp dir $tmp_dir"
   fi
   # download the binary to the specified directory
@@ -192,7 +193,7 @@ download_and_install_pnpm() {
   # Copy the binary to the install directory
   mv "$tmp_dir/pnpm" "$install_dir"
   rm -r "$tmp_dir"
-  if [ "$PNPMVM_DEBUG" = "true" ]; then
+  if [ "$pvm_DEBUG" = "true" ]; then
     echo "Removed temp dir $tmp_dir"
     echo "Installed pnpm to $install_dir"
   fi
