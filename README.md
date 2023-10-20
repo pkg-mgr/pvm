@@ -45,7 +45,7 @@ pnpm --version
 (The `.pvmrc` must be in the same directory as your project's `package.json` file.)
 
 ## How It Works
-* Individual command scripts are installed to `~/.pvm/cmds`` folder
+* Individual command scripts are installed to `~/.pvm/cmds` folder
 * pnpm binaries are installed to `~/.pvm/version` folders (ex: `~/.pvm/8.9.2`)
 * The `run.sh` script is copied to `/usr/local/bin/pnpm`. This allows us to intercept and run pnpm commands with the correct version of pnpm.
 * The `cmd.sh` script is copied to `/usr/local/bin/pvm` and `/usr/local/bin/pvm`. This allows us to run the pvm commands which collectively allow pnpm version management.
