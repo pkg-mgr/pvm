@@ -7,7 +7,7 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 
 if [ "${1:-}" = "--remote" ]; then
   echo "Available remote versions:"

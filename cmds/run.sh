@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Runs pnpm commands with auto-pnpm version detection
-# First, check for a .pnpmvmrc file
-# Next, check for a current version set via pnpmvm use
+# First, check for a .pvmrc file
+# Next, check for a current version set via pvm use
 # Finally, check for a default version
 # If no version is found, fail with an error message
 
@@ -10,14 +10,14 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 default_version_file="$base_dir/default-version.txt"
 pkg_json_path=""
 
-PNPMVM_DEBUG=false
+pvm_DEBUG=false
 # Check for debug (verbose) output
 if [ "$1" == "--debug" ]; then
-  PNPMVM_DEBUG=true
+  pvm_DEBUG=true
   shift
 fi
 
@@ -37,32 +37,32 @@ while [[ "$dir" != "/" ]]; do
 done
 
 # Resolve the pnpm version to use
-pnpmrc_file="$dir/.pnpmvmrc"
-if [ -z "${pnpmvm_parent_pid+x}" ]; then
+pnpmrc_file="$dir/.pvmrc"
+if [ -z "${pvm_parent_pid+x}" ]; then
   parent_pid=$PPID
 else
-  parent_pid=$pnpmvm_parent_pid
+  parent_pid=$pvm_parent_pid
 fi
-tmp_version_file="/tmp/PNPMVM_VERSION_$parent_pid"
+tmp_version_file="/tmp/pvm_VERSION_$parent_pid"
 
-# If we found a package.json file and that directory has a .pnpmvmrc file, use that explicit version:
+# If we found a package.json file and that directory has a .pvmrc file, use that explicit version:
 if [ -n "$pkg_json_path" ] && [ -f "$pnpmrc_file" ]; then
   pnpm_version=$(head -n 1 "$pnpmrc_file")
-  if [ "$PNPMVM_DEBUG" = "true" ]; then
+  if [ "$pvm_DEBUG" = "true" ]; then
     echo "Using version: $pnpm_version"
   fi
   # for now, assume this is a full semantic version
-# Else, if we have a temp file with a version that matches the current shell PID (set via pnpmvm use), use that version:
+# Else, if we have a temp file with a version that matches the current shell PID (set via pvm use), use that version:
 elif [ -f "$tmp_version_file" ]; then
   pnpm_version=$(head -n 1 "$tmp_version_file")
-  if [ "$PNPMVM_DEBUG" = "true" ]; then
+  if [ "$pvm_DEBUG" = "true" ]; then
     echo "Using version: $pnpm_version"
     echo "DEBUG: from temp file $tmp_version_file"
   fi
 # Else fall back to system-wide default version (if it exists):
 elif [ -f "$default_version_file" ]; then
   pnpm_version=$(head -n 1 "$default_version_file")
-  if [ "$PNPMVM_DEBUG" = "true" ]; then
+  if [ "$pvm_DEBUG" = "true" ]; then
     echo "DEBUG: falling back to default version"
     echo "DEBUG: default_version_file: $default_version_file"
   fi
@@ -74,7 +74,7 @@ else
   exit 1
 fi
 
-if [ ! -f "$HOME/.pnpmvm/$pnpm_version/pnpm" ]; then
+if [ ! -f "$HOME/.pvm/$pnpm_version/pnpm" ]; then
   echo "Version $pnpm_version is not installed. Please install it first. (pvm install $pnpm_version)"
   exit 1
 fi

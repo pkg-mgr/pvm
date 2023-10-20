@@ -6,7 +6,7 @@ set -e # exit on errors
 set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 
 error_if_file_exists() {
   if [[ -f $1 ]]; then
@@ -42,11 +42,11 @@ dir_should_exist() {
   fi
 }
 
-uninstall_pnpmvm() {
+uninstall_pvm() {
   echo "y" | ./cmds/nuke.sh
   error_if_dir_exists "$base_dir"
   error_if_file_exists "/usr/local/bin/pnpm"
-  error_if_file_exists "/usr/local/bin/pnpmvm"
+  error_if_file_exists "/usr/local/bin/pvm"
   error_if_file_exists "/usr/local/bin/pvm"
 }
 
@@ -80,13 +80,13 @@ function check_output_contains_str() {
 ### Beginning of Tests ###
 
 echo "*** Initial setup, removing any existing install..."
-uninstall_pnpmvm
+uninstall_pvm
 
-echo "*** Installing pnpmvm..."
+echo "*** Installing pvm..."
 ./setup.sh
 
 echo "Check that base commands exist..."
-cmd_should_exist "pnpmvm"
+cmd_should_exist "pvm"
 cmd_should_exist "pnpm"
 cmd_should_exist "pvm"
 
@@ -134,5 +134,9 @@ dir_should_exist "$base_dir/8.9.2"
 echo "Help command should display text..."
 help_output=$(pvm help > /dev/null 2>&1)
 check_output_contains_str "$help_output" "Available commands:"
+
+echo "Check that invalid commands display the help info..."
+invalid_cmd_output=$(pvm invalid_command 2>&1)
+check_output_contains_str "$invalid_cmd_output" "Available commands:"
 
 echo "*** All tests passed! ***"

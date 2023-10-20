@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script serves as the entrypoint for the pnpmvm command.
+# This script serves as the entrypoint for the pvm command.
 # It determines which script the user is trying to run and executes it, passing on all other args.
 
 set -e # exit on errors
@@ -11,17 +11,17 @@ set -u # exit on unset variables
 if [ $# -eq 0 ]; then
   echo "No arguments provided. Please supply a command. See pvm help for more details."
   echo ""
-  ~/.pnpmvm/cmds/help.sh
+  ~/.pvm/cmds/help.sh
   exit 1
 fi
 
-base_dir="$HOME/.pnpmvm"
+base_dir="$HOME/.pvm"
 cmds_dir="$base_dir/cmds"
 
-PNPMVM_DEBUG=false
+pvm_DEBUG=false
 # Check for debug (verbose) output
 if [ "$1" == "--debug" ]; then
-  PNPMVM_DEBUG=true
+  pvm_DEBUG=true
   shift
 fi
 
@@ -33,12 +33,12 @@ shift
 
 # Check if the script for the command exists
 if [ ! -f "$cmds_dir/$cmd.sh" ]; then
-  echo "Command not found: $cmd at $cmds_dir/$cmd.sh"
-  ./"$base_dir"/cmds/help.sh
+  echo "Command not found: $cmd (no file at: $cmds_dir/$cmd.sh)"
+  "$cmds_dir/help.sh"
   exit 1
 fi
 
-if [ "$PNPMVM_DEBUG" = "true" ]; then
+if [ "$pvm_DEBUG" = "true" ]; then
   echo "DEBUG: Running command: $cmd"
   if [ -z "$*" ]; then
     echo "DEBUG: No args provided"
@@ -49,8 +49,8 @@ if [ "$PNPMVM_DEBUG" = "true" ]; then
 fi
 
 # Export original PID (needed for use command)
-export pnpmvm_parent_pid=$PPID
-export PNPMVM_DEBUG
+export pvm_parent_pid=$PPID
+export pvm_DEBUG
 
 # Run the script for the command with all remaining arguments
 "$cmds_dir/$cmd.sh" "$@"
