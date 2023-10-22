@@ -10,6 +10,8 @@ base_dir="$HOME/.pvm"
 cmds_dir="$base_dir/cmds"
 default_version_file="$base_dir/default-version.txt"
 
+# todo: handle $1 undefined?
+
 ensure_dir() {
   if [ ! -d "$1" ]; then
     mkdir -p "$1"
