@@ -86,7 +86,8 @@ fi
 echo "Installed pvm cmds: $cmd_list"
 
 echo "Installing scripts in bin folder."
-cp "$cmds_dir/run.sh" "/usr/local/bin/pnpm"
 cp "$cmds_dir/cmd.sh" "/usr/local/bin/pvm"
+cp "$cmds_dir/run.sh" "/usr/local/bin/pnpm"
+cp "$cmds_dir/run.sh" "/usr/local/bin/pnpx"
 
 echo Setup completed.

@@ -7,6 +7,7 @@ set -o pipefail # exit on pipe failure
 set -u # exit on unset variables
 
 base_dir="$HOME/.pvm"
+pkg_dir="$HOME/.pnpm-store"
 
 error_if_file_exists() {
   if [[ -f $1 ]]; then
@@ -153,3 +154,17 @@ check_output_contains_str "$help_output" "Available commands:"
 echo "Check that invalid commands display the help info..."
 invalid_cmd_output=$(pvm invalid_command 2>&1) || true # ignore err
 check_output_contains_str "$invalid_cmd_output" "Available commands:"
+
+echo "Test pnpm add -g cowsay..."
+rm -f "$pkg_dir/cowsay"
+error_if_file_exists "$pkg_dir/cowsay"
+pnpm add -g cowsay
+file_should_exist "$pkg_dir/cowsay"
+
+echo "Test pnpx cowsay hello..."
+cowsay_output=$(pnpx cowsay "hello")
+check_output_contains_str "$cowsay_output" "< hello >"
+
+echo "test pnpm exec cowsay Moo..."
+cowsay_output=$(pnpm exec cowsay Moo)
+check_output_contains_str "$cowsay_output" "< Moo >"

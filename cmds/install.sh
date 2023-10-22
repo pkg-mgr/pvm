@@ -8,6 +8,7 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pvm"
 cmds_dir="$base_dir/cmds"
+pkg_dir="$HOME/.pnpm-store"
 default_version_file="$base_dir/default-version.txt"
 
 # todo: handle $1 undefined?
@@ -179,6 +180,9 @@ download_and_install_pnpm() {
   # for now, always force-install:
   remove_dir "$install_dir"
   ensure_dir "$install_dir"
+
+  # Ensure package dir exists.
+  ensure_dir "$pkg_dir"
   
   tmp_dir="$(mktemp -d)" || abort "Tmpdir Error!"
   # note: tmp_dir cannot be local due to this trap:

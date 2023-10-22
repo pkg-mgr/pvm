@@ -12,8 +12,9 @@ set -u # exit on unset variables
 
 base_dir="$HOME/.pvm"
 default_version_file="$base_dir/default-version.txt"
-pkg_json_path=""
+pkg_dir="$HOME/.pnpm-store"
 
+pkg_json_path=""
 pvm_DEBUG=false
 # Check for debug (verbose) output
 if [ "$1" == "--debug" ]; then
@@ -79,6 +80,19 @@ if [ ! -f "$HOME/.pvm/$pnpm_version/pnpm" ]; then
   exit 1
 fi
 
-# Pass all the original arguments to the pnpm executable
+#PNPM_HOME is required for global installs:
+export PNPM_HOME="$pkg_dir"
+# todo: check if packages installed on old v6 versions still work in the latest v9 version. If not maybe a per-major-version install?
+
+# pnpm also requires the home dir to be in the path:
+export PATH=$PNPM_HOME:$PATH
+
+# Pass all the original arguments to the pnpm or pnpx executable
 pnpm_executable_path="$base_dir/$pnpm_version/pnpm"
-"$pnpm_executable_path" "$@"
+executable_name=$(basename "$0")
+if [ "$executable_name" = "pnpm" ]; then
+  "$pnpm_executable_path" "$@"
+else
+  # pnpx:
+  "$pnpm_executable_path" exec "$@"
+fi
