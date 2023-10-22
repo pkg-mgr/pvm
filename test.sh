@@ -69,13 +69,28 @@ check_current_pnpm_version() {
 }
 
 function check_output_contains_str() {
-  if [[ "$2" != *"$1"* ]]; then
-    echo "Expected string not detected."
-    echo "Expected: $1"
-    echo "Received: $2"
+  if [ -z "$2" ]; then
+    echo "Error: no string to check for."
+    exit 1
+  fi
+  if [[ "$1" != *"$2"* ]]; then
+    echo "Test failure - Expected string not detected."
+    echo "EXPECTED: $1"
+    echo "RECEIVED: $2"
     exit 1
   fi
 }
+
+function on_error {
+  exit_status=$?
+  if [ $exit_status -eq 0 ]; then
+    echo "*** All Tests Passed! ***"
+  else
+    echo "*** TEST FAILURE ***"
+  fi
+}
+
+trap on_error EXIT
 
 ### Beginning of Tests ###
 
@@ -104,7 +119,7 @@ file_should_exist "$base_dir/7.9.5/pnpm"
 check_current_pnpm_version "7.9.5"
 
 echo "Test that pvm list shows both versions..."
-list_output=$(pvm list > /dev/null 2>&1)
+list_output=$(pvm list 2>&1)
 check_output_contains_str "$list_output" "8.9.2"
 check_output_contains_str "$list_output" "7.9.5"
 
@@ -127,16 +142,14 @@ pvm uninstall 7.9.5
 error_if_dir_exists "$base_dir/7.9.5"
 
 echo "Installing an invalid version should not work or delete anything else."
-pvm install 3 > /dev/null 2>&1 || true # ignore err
+pvm install 3 2>&1 || true # ignore err
 dir_should_exist "$base_dir"
 dir_should_exist "$base_dir/8.9.2"
 
 echo "Help command should display text..."
-help_output=$(pvm help > /dev/null 2>&1)
+help_output=$(pvm help 2>&1)
 check_output_contains_str "$help_output" "Available commands:"
 
 echo "Check that invalid commands display the help info..."
-invalid_cmd_output=$(pvm invalid_command 2>&1)
+invalid_cmd_output=$(pvm invalid_command 2>&1) || true # ignore err
 check_output_contains_str "$invalid_cmd_output" "Available commands:"
-
-echo "*** All tests passed! ***"
