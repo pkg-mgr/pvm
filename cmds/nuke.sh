@@ -17,6 +17,7 @@ then
     rm -rf "$base_dir"
 	 echo Removing scripts from /usr/local/bin
 	 rm -f /usr/local/bin/pnpm
+	 rm -f /usr/local/bin/pnpx
 	 rm -f /usr/local/bin/pvm
 	 echo "Uninstall complete."
 else

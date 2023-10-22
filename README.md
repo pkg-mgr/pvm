@@ -24,10 +24,12 @@ curl -H 'Cache-Control: no-cache' -o- https://raw.githubusercontent.com/pkg-mgr/
 ## Uninstalling
 
 ```sh
-rm -rf ~/.pvm /usr/local/bin/pnpm /usr/local/bin/pvm
+rm -rf ~/.pvm /usr/local/bin/pnpm /usr/local/bin/pnpx /usr/local/bin/pvm
 # or simply:
 pvm nuke
 ```
+
+*Note: this will not remove globally-installed packages. To do that, `rm -rf ~/.pnpm-store`*
 
 ## Usage
 
@@ -44,9 +46,14 @@ pnpm --version
 ```
 (The `.pvmrc` must be in the same directory as your project's `package.json` file.)
 
+### Global Installs by pnpm version
+
+Install a package globally, as normal. Ex: `pnpm add -g cowsay`
+You can then run the global package with pnpx. Ex: `pnpx cowsay HI` or `pnpm exec cowsay HI`.
+
 ## How It Works
 * Individual command scripts are installed to `~/.pvm/cmds` folder
-* pnpm binaries are installed to `~/.pvm/version` folders (ex: `~/.pvm/8.9.2`)
+* pnpm binaries are installed to `~/.pvm/version` folders (ex: `~/.pvm/8.9.2`). Global installs are added to this folder as well.
 * The `run.sh` script is copied to `/usr/local/bin/pnpm`. This allows us to intercept and run pnpm commands with the correct version of pnpm.
 * The `cmd.sh` script is copied to `/usr/local/bin/pvm` and `/usr/local/bin/pvm`. This allows us to run the pvm commands which collectively allow pnpm version management.
 
