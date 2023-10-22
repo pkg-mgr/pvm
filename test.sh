@@ -138,15 +138,6 @@ echo "Test changing the default version..."
 pvm default 7.9.5
 check_current_pnpm_version "7.9.5"
 
-echo "Test uninstalling a version..."
-pvm uninstall 7.9.5
-error_if_dir_exists "$base_dir/7.9.5"
-
-echo "Installing an invalid version should not work or delete anything else."
-pvm install 3 2>&1 || true # ignore err
-dir_should_exist "$base_dir"
-dir_should_exist "$base_dir/8.9.2"
-
 echo "Help command should display text..."
 help_output=$(pvm help 2>&1)
 check_output_contains_str "$help_output" "Available commands:"
@@ -165,6 +156,41 @@ echo "Test pnpx cowsay hello..."
 cowsay_output=$(pnpx cowsay "hello")
 check_output_contains_str "$cowsay_output" "< hello >"
 
-echo "test pnpm exec cowsay Moo..."
+echo "Test pnpm exec cowsay Moo..."
 cowsay_output=$(pnpm exec cowsay Moo)
 check_output_contains_str "$cowsay_output" "< Moo >"
+
+echo "Test pnpm remove -g cowsay..."
+file_should_exist "$pkg_dir/cowsay"
+pnpm remove -g cowsay
+error_if_file_exists "$pkg_dir/cowsay"
+
+echo "Test uninstalling a version..."
+pvm uninstall 7.9.5
+error_if_dir_exists "$base_dir/7.9.5"
+
+echo "Installing an invalid version should not work or delete anything else..."
+pvm install 3 2>&1 || true # ignore err
+dir_should_exist "$base_dir"
+dir_should_exist "$base_dir/8.9.2"
+
+echo "*** Tests within a repo ***"
+cd repo-test-1
+rm -rf node_modules
+
+echo "Test .pvmrc file takes precidence over default version..."
+# (default version would still be 7.9.5 from above, which was uninstalled)
+check_current_pnpm_version "8.9.2"
+
+echo "Test pnpm install..."
+error_if_dir_exists "./node_modules"
+pnpm install
+dir_should_exist "./node_modules"
+
+echo "Test running a script defined in package.json..."
+script_output=$(pnpm hi)
+check_output_contains_str "$script_output" "< hi >"
+
+echo "Test running a node script with a local dependency..."
+script_output=$(pnpm test1)
+check_output_contains_str "$script_output" "< I'm a moooodule >"

@@ -30,5 +30,5 @@ echo "Unused the current version."
 if [[ -z ${default_version+x} ]]; then
     echo "No default version detected. pvm will now check for a .pvmrc file if it exists, otherwise it pnpm commands will fail."
 else
-    echo "pvm will now default $default_version to unless a .pvmrc file exists"
+    echo "pvm will now default to version $default_version to unless a .pvmrc file exists"
 fi
