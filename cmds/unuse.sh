@@ -22,7 +22,7 @@ if [[ -f $default_version_file ]]; then
     default_version=$(cat "$default_version_file")
 fi
 
-if [ "$pvm_DEBUG" = "true" ]; then
+if [ "$PVM_DEBUG" = "true" ]; then
   echo "DEBUG: Removed version file $tmp_version_file"
 fi
 

@@ -73,6 +73,8 @@ Note: after running setup, you can run `pvm help` to see the list of available c
 * `pvm update` aka `~/.pvm/cmds/` - updates all pvm scripts
 * `pvm use` aka `~/.pvm/cmds/use.sh` - sets the pnpm version for the current terminal session
 
+You can debug (produce additional command output) by setting the `PVM_DEBUG` environment variable to `true` before running any command. Ex: `PVM_DEBUG=true pvm default`
+
 ## Local Development Setup
 ### Local Dev Install:
 * VS Code

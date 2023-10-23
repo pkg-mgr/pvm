@@ -189,7 +189,7 @@ download_and_install_pnpm() {
   trap 'rm -rf "$tmp_dir"' EXIT INT TERM HUP
   
   ohai "Downloading pnpm binaries ${version}"
-  if [ "$pvm_DEBUG" = "true" ]; then
+  if [ "$PVM_DEBUG" = "true" ]; then
     echo "Using temp dir $tmp_dir"
   fi
   # download the binary to the specified directory
@@ -199,7 +199,7 @@ download_and_install_pnpm() {
   # Copy the binary to the install directory
   mv "$tmp_dir/pnpm" "$install_dir"
   rm -r "$tmp_dir"
-  if [ "$pvm_DEBUG" = "true" ]; then
+  if [ "$PVM_DEBUG" = "true" ]; then
     echo "Removed temp dir $tmp_dir"
     echo "Installed pnpm to $install_dir"
   fi

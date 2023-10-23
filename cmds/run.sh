@@ -14,14 +14,10 @@ base_dir="$HOME/.pvm"
 default_version_file="$base_dir/default-version.txt"
 pkg_dir="$HOME/.pnpm-store"
 
-pkg_json_path=""
-pvm_DEBUG=false
-# Check for debug (verbose) output
-if [ "$1" == "--debug" ]; then
-  pvm_DEBUG=true
-  shift
-fi
+# Set PVM_DEBUG to false if it's not already set:
+: "${PVM_DEBUG:=false}"
 
+pkg_json_path=""
 # Look for a project directory (a dir that contains package.json):
 # Start with the current directory
 dir=$(pwd)
@@ -49,21 +45,21 @@ tmp_version_file="/tmp/pvm_VERSION_$parent_pid"
 # If we found a package.json file and that directory has a .pvmrc file, use that explicit version:
 if [ -n "$pkg_json_path" ] && [ -f "$pnpmrc_file" ]; then
   pnpm_version=$(head -n 1 "$pnpmrc_file")
-  if [ "$pvm_DEBUG" = "true" ]; then
+  if [ "$PVM_DEBUG" = "true" ]; then
     echo "Using version: $pnpm_version"
   fi
   # for now, assume this is a full semantic version
 # Else, if we have a temp file with a version that matches the current shell PID (set via pvm use), use that version:
 elif [ -f "$tmp_version_file" ]; then
   pnpm_version=$(head -n 1 "$tmp_version_file")
-  if [ "$pvm_DEBUG" = "true" ]; then
+  if [ "$PVM_DEBUG" = "true" ]; then
     echo "Using version: $pnpm_version"
     echo "DEBUG: from temp file $tmp_version_file"
   fi
 # Else fall back to system-wide default version (if it exists):
 elif [ -f "$default_version_file" ]; then
   pnpm_version=$(head -n 1 "$default_version_file")
-  if [ "$pvm_DEBUG" = "true" ]; then
+  if [ "$PVM_DEBUG" = "true" ]; then
     echo "DEBUG: falling back to default version"
     echo "DEBUG: default_version_file: $default_version_file"
   fi
@@ -86,6 +82,8 @@ export PNPM_HOME="$pkg_dir"
 
 # pnpm also requires the home dir to be in the path:
 export PATH=$PNPM_HOME:$PATH
+
+export PVM_DEBUG
 
 # Pass all the original arguments to the pnpm or pnpx executable
 pnpm_executable_path="$base_dir/$pnpm_version/pnpm"
