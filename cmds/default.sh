@@ -39,6 +39,6 @@ fi
 # Next, set the new default version:
 echo "$version" > "$default_version_file"
 echo "Setting default version to $version"
-if [ "$pvm_DEBUG" = "true" ]; then
+if [ "$PVM_DEBUG" = "true" ]; then
   echo "DEBUG: Wrote version $version to $default_version_file"
 fi

@@ -25,7 +25,7 @@ fi
 tmp_version_file="/tmp/pvm_VERSION_$parent_pid"
 echo "$version" > "$tmp_version_file"
 
-if [ "$pvm_DEBUG" = "true" ]; then
+if [ "$PVM_DEBUG" = "true" ]; then
   echo "DEBUG: Wrote version $version to $tmp_version_file"
 fi
 echo "Now using version: $version"

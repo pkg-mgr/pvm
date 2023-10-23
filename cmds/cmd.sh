@@ -18,12 +18,8 @@ fi
 base_dir="$HOME/.pvm"
 cmds_dir="$base_dir/cmds"
 
-pvm_DEBUG=false
-# Check for debug (verbose) output
-if [ "$1" == "--debug" ]; then
-  pvm_DEBUG=true
-  shift
-fi
+# Set PVM_DEBUG to false if it's not already set:
+: "${PVM_DEBUG:=false}"
 
 # Get the command from the first argument
 cmd=${1:-}
@@ -38,7 +34,7 @@ if [ ! -f "$cmds_dir/$cmd.sh" ]; then
   exit 1
 fi
 
-if [ "$pvm_DEBUG" = "true" ]; then
+if [ "$PVM_DEBUG" = "true" ]; then
   echo "DEBUG: Running command: $cmd"
   if [ -z "$*" ]; then
     echo "DEBUG: No args provided"
@@ -50,7 +46,7 @@ fi
 
 # Export original PID (needed for use command)
 export pvm_parent_pid=$PPID
-export pvm_DEBUG
+export PVM_DEBUG
 
 # Run the script for the command with all remaining arguments
 "$cmds_dir/$cmd.sh" "$@"
